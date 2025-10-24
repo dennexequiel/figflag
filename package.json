@@ -1,15 +1,26 @@
 {
   "name": "figflag",
   "type": "module",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
-  },
-  "dependencies": {
-    "hono": "^4.10.2"
+    "dev": "bun run --filter=@figflag/api dev",
+    "dev:api": "bun run --filter=@figflag/api dev",
+    "dev:docs": "bun run --filter=@figflag/docs dev",
+    "dev:dashboard": "bun run --filter=@figflag/dashboard dev",
+    "build": "bun run --filter=@figflag/shared build && bun run --filter=@figflag/sdk build",
+    "build:api": "bun run --filter=@figflag/api build",
+    "build:shared": "bun run --filter=@figflag/shared build",
+    "build:sdk": "bun run --filter=@figflag/sdk build",
+    "deploy": "bun run --filter=@figflag/api deploy",
+    "install:all": "bun install",
+    "type-check": "bun run --filter=@figflag/shared type-check && bun run --filter=@figflag/sdk type-check",
+    "cf-typegen": "bun run --filter=@figflag/api cf-typegen"
   },
   "devDependencies": {
-    "wrangler": "^4.4.0"
+    "typescript": "^5.0.0"
   }
 }
