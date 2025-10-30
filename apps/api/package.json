@@ -3,14 +3,19 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
+    "db:migrate:local": "wrangler d1 migrations apply FF_DB --local",
+    "db:seed:local": "wrangler d1 execute FF_DB --local --file ./migrations/001_seed.sql",
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
-    "hono": "^4.10.2",
-    "@figflag/shared": "workspace:*"
+    "@figflag/shared": "workspace:*",
+    "@types/node": "^24.9.2",
+    "drizzle-orm": "0.44.7",
+    "hono": "4.10.4"
   },
   "devDependencies": {
-    "wrangler": "^4.4.0"
+    "drizzle-kit": "0.31.6",
+    "wrangler": "4.45.3"
   }
 }

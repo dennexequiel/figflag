@@ -1,11 +1,9 @@
 {
   "name": "figflag",
-  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "dev": "bun run --filter=@figflag/api dev",
     "dev:api": "bun run --filter=@figflag/api dev",
@@ -20,7 +18,9 @@
     "type-check": "bun run --filter=@figflag/shared type-check && bun run --filter=@figflag/sdk type-check",
     "cf-typegen": "bun run --filter=@figflag/api cf-typegen"
   },
-  "devDependencies": {
-    "typescript": "^5.0.0"
-  }
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
