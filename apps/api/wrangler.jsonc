@@ -3,6 +3,9 @@
   "name": "figflag",
   "main": "src/index.ts",
   "compatibility_date": "2025-10-30",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   // Local-only example vars; safe to keep even without a Cloudflare account
   // "vars": {
   //   "EXAMPLE_VAR": "value"
@@ -17,7 +20,8 @@
     {
       "binding": "FF_DB",
       "database_name": "ff-local-db",
-      "database_id": "local-ff-db"
+      "database_id": "local-ff-db",
+      "migrations_dir": "migrations"
     }
   ]
 }
