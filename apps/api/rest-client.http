@@ -1,0 +1,247 @@
+### REST Client requests for FigFlag Admin API
+### Install REST Client extension in VS Code to use these
+
+@baseUrl = http://127.0.0.1:8787
+@apiKey = dev-key-change-in-production
+
+##########################################
+# QUICK START WORKFLOW (Follow this order!)
+##########################################
+
+### Step 1: Create a Project (parent)
+POST {{baseUrl}}/api/projects
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "name": "E-Commerce Platform",
+  "slug": "ecommerce",
+  "description": "Main e-commerce application"
+}
+
+### Step 2: Create Environment for the Project
+### (Use the projectId from Step 1 response)
+POST {{baseUrl}}/api/environments
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "projectId": "proj_ecommerce",
+  "name": "Production",
+  "slug": "prod",
+  "description": "Production environment"
+}
+
+### Step 3: Create a Flag for the Environment
+### (Use environmentId from Step 2 response)
+POST {{baseUrl}}/api/flags
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "projectId": "proj_ecommerce",
+  "environmentId": "env_prod",
+  "key": "checkout.newFlow",
+  "name": "New Checkout Flow",
+  "description": "Enable new checkout experience",
+  "enabled": false,
+  "defaultValue": null
+}
+
+### Step 4: Create a Config for the Environment
+POST {{baseUrl}}/api/configs
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "projectId": "proj_ecommerce",
+  "environmentId": "env_prod",
+  "key": "api.maxItems",
+  "name": "Max Cart Items",
+  "description": "Maximum items allowed in cart",
+  "value": "50"
+}
+
+### Step 5: Update Flag (Toggle it ON)
+### (Use flag id from Step 3 response)
+PUT {{baseUrl}}/api/flags/flag_checkout_newflow_prod
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "enabled": true
+}
+
+### Step 6: Update Config Value
+### (Use config id from Step 4 response)
+PUT {{baseUrl}}/api/configs/cfg_api_maxitems_prod
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "value": "100"
+}
+
+### Step 7: View the Public API (see your changes!)
+GET {{baseUrl}}/public/ecommerce/prod
+
+##########################################
+# DEFAULT EXAMPLES (Reference)
+##########################################
+
+##########################################
+# PROJECTS
+##########################################
+
+### Get all projects
+GET {{baseUrl}}/api/projects
+Authorization: Bearer {{apiKey}}
+
+### Get single project
+GET {{baseUrl}}/api/projects/proj_figflag
+Authorization: Bearer {{apiKey}}
+
+### Update project
+PUT {{baseUrl}}/api/projects/proj_figflag
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "name": "FigFlag Updated",
+  "description": "Updated description"
+}
+
+### Delete project (only if no environments)
+DELETE {{baseUrl}}/api/projects/proj_figflag
+Authorization: Bearer {{apiKey}}
+
+##########################################
+# ENVIRONMENTS
+##########################################
+
+### Create environment (example)
+### NOTE: Requires existing projectId!
+POST {{baseUrl}}/api/environments
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "projectId": "proj_figflag",
+  "name": "Development",
+  "slug": "dev",
+  "description": "Local development environment"
+}
+
+### Get environments (all)
+GET {{baseUrl}}/api/environments
+Authorization: Bearer {{apiKey}}
+
+### Get environments (filtered by project)
+GET {{baseUrl}}/api/environments?projectId=proj_figflag
+Authorization: Bearer {{apiKey}}
+
+##########################################
+# FLAGS
+##########################################
+
+### Create flag (example)
+### NOTE: Requires existing projectId and environmentId!
+POST {{baseUrl}}/api/flags
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "projectId": "proj_figflag",
+  "environmentId": "env_dev",
+  "key": "ui.darkMode",
+  "name": "Dark Mode",
+  "description": "Enable dark mode UI",
+  "enabled": true,
+  "defaultValue": null
+}
+
+### Get flags (all)
+GET {{baseUrl}}/api/flags
+Authorization: Bearer {{apiKey}}
+
+### Get flags (filtered by environment)
+GET {{baseUrl}}/api/flags?environmentId=env_dev
+Authorization: Bearer {{apiKey}}
+
+### Toggle flag (update enabled status)
+PUT {{baseUrl}}/api/flags/flag_new_nav_prd
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "enabled": true
+}
+
+### Delete flag
+DELETE {{baseUrl}}/api/flags/flag_new_nav_prd
+Authorization: Bearer {{apiKey}}
+
+##########################################
+# CONFIGS
+##########################################
+
+### Create config (example)
+### NOTE: Requires existing projectId and environmentId!
+POST {{baseUrl}}/api/configs
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "projectId": "proj_figflag",
+  "environmentId": "env_dev",
+  "key": "app.maxRetries",
+  "name": "Max Retries",
+  "description": "Maximum number of retry attempts",
+  "value": "3"
+}
+
+### Create config with JSON object
+POST {{baseUrl}}/api/configs
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "projectId": "proj_figflag",
+  "environmentId": "env_dev",
+  "key": "api.settings",
+  "name": "API Settings",
+  "description": "API configuration object",
+  "value": {
+    "timeout": 5000,
+    "retries": 3,
+    "endpoints": ["/v1", "/v2"]
+  }
+}
+
+### Get configs (all)
+GET {{baseUrl}}/api/configs
+Authorization: Bearer {{apiKey}}
+
+### Update config value
+PUT {{baseUrl}}/api/configs/cfg_api_dev
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+{
+  "value": "\"http://localhost:3000\""
+}
+
+### Delete config
+DELETE {{baseUrl}}/api/configs/cfg_api_dev
+Authorization: Bearer {{apiKey}}
+
+##########################################
+# PUBLIC API (no auth needed)
+##########################################
+
+### Get public flags
+GET {{baseUrl}}/public/figflag/prod
+
+### Health check
+GET {{baseUrl}}/health
+
